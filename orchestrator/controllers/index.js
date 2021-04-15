@@ -11,11 +11,11 @@ class Controller {
       if (data) {
         res.status(200).json(JSON.parse(data))
       } else {
-        const response = await axios.get(service)
-        console.log(response)
+        const { data } = await axios.get(service)
+        console.log(data)
 
-        redis.set('userData:data', JSON.stringify(response))
-        res.status(200).json(response)
+        redis.set('userData:data', JSON.stringify(data))
+        res.status(200).json(data)
       }
     } catch (err) {
       console.log(err)
@@ -33,11 +33,11 @@ class Controller {
       if (data) {
         res.status(200).json(JSON.parse(data))
       } else {
-        const response = await axios.get(`${service}${id}`)
-        console.log(response)
+        const { data } = await axios.get(`${service}${id}`)
+        console.log(data)
 
-        redis.set('userDataByAcc:data', JSON.stringify(response))
-        res.status(200).json(response)
+        redis.set('userDataByAcc:data', JSON.stringify(data))
+        res.status(200).json(data)
       }
     } catch (err) {
       console.log(err)
@@ -55,11 +55,11 @@ class Controller {
       if (data) {
         res.status(200).json(JSON.parse(data))
       } else {
-        const response = await axios.get(`${service}${id}`)
-        console.log(response)
+        const { data } = await axios.get(`${service}${id}`)
+        console.log(data)
 
-        redis.set('userDataByID:data', JSON.stringify(response))
-        res.status(200).json(response)
+        redis.set('userDataByID:data', JSON.stringify(data))
+        res.status(200).json(data)
       }
     } catch (err) {
       console.log(err)
@@ -69,11 +69,66 @@ class Controller {
     }
   }
 
-  static async create(req, res, next) { }
+  static async create(req, res, next) {
+    await redis.del('userData:data')
+    const input = {
+      userName: req.body.userName,
+      accountNumber: req.body.accountNumber,
+      emailAddress: req.body.emailAddress,
+      identityNumber: req.body.identityNumber,
+    }
+    try {
+      const { data } = await axios.post(service, input)
+      console.log(data)
 
-  static async remove(req, res, next) { }
+      res.status(201).json(data)
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({
+        error: err
+      })
+    }
+  }
 
-  static async update(req, res, next) { }
+  static async remove(req, res, next) {
+    await redis.del('userData:data')
+    const id = req.params.idUser
+
+    try {
+      const { data } = await axios.delete(`${service}${id}`)
+      console.log(data)
+
+      res.status(200).json(data)
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({
+        error: err
+      })
+    }
+  }
+
+  static async update(req, res, next) {
+    await redis.del('userData:data')
+    const id = req.params.idUser
+    const input = {
+      userName: req.body.userName,
+      accountNumber: req.body.accountNumber,
+      emailAddress: req.body.emailAddress,
+      identityNumber: req.body.identityNumber,
+    }
+
+    try {
+      const { data } = await axios.put(`${service}${id}`, input)
+      console.log(data)
+
+      res.status(200).json(data)
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({
+        error: err
+      })
+    }
+  }
 }
 
 module.exports = Controller
