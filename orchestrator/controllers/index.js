@@ -29,11 +29,10 @@ class Controller {
     try {
       const id = +req.params.accNumber
       const data = await redis.get('userDataByAcc:data')
-
-      if (data) {
+      if (data._id) {
         res.status(200).json(JSON.parse(data))
       } else {
-        const { data } = await axios.get(`${service}${id}`)
+        const { data } = await axios.get(`${service}accountNumber/${id}`)
         console.log(data)
 
         redis.set('userDataByAcc:data', JSON.stringify(data))
@@ -55,7 +54,7 @@ class Controller {
       if (data) {
         res.status(200).json(JSON.parse(data))
       } else {
-        const { data } = await axios.get(`${service}${id}`)
+        const { data } = await axios.get(`${service}idNumber/${id}`)
         console.log(data)
 
         redis.set('userDataByID:data', JSON.stringify(data))
