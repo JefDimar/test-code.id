@@ -81,7 +81,7 @@ class Controller {
       const { data } = await axios.post(service, input)
       console.log(data)
 
-      res.status(201).json(data)
+      res.status(201).json(data.ops[0])
     } catch (err) {
       console.log(err)
       res.status(500).json({
@@ -98,7 +98,7 @@ class Controller {
       const { data } = await axios.delete(`${service}${id}`)
       console.log(data)
 
-      res.status(200).json(data)
+      res.status(200).json(data.result)
     } catch (err) {
       console.log(err)
       res.status(500).json({
@@ -118,7 +118,7 @@ class Controller {
     }
 
     try {
-      const { data } = await axios.put(`${service}${id}`, input)
+      const { data } = await axios.patch(`${service}${id}`, input)
       console.log(data)
 
       res.status(200).json(data)
