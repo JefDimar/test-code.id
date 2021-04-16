@@ -17,7 +17,7 @@ class Controller {
   static async findAcc (req, res, next) {
     try {
       const id = +req.params.accNumber
-      console.log(id, "di index service")
+
       const result = await UserData.findAccNum(id)
       console.log(result)
       res.status(200).json(result)
@@ -31,7 +31,7 @@ class Controller {
 
   static async findId (req, res, next) {
     try {
-      const id = req.params.idNumber
+      const id = +req.params.idNumber
 
       const result = await UserData.findIDNum(id)
       console.log(result)

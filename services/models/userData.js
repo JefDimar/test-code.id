@@ -11,11 +11,11 @@ class UserData {
   }
 
   static findAccNum(accNum) {
-    return getDatabase().collection('userData').findOne({ "accountNumber": accNum })
+    return getDatabase().collection('userData').findOne({ accountNumber: accNum })
   }
 
   static findIDNum(IDNum) {
-    return getDatabase().collection('userData').findOne({ "identityNumber": IDNum })
+    return getDatabase().collection('userData').findOne({ identityNumber: IDNum })
   }
 
   static delete(id) {
