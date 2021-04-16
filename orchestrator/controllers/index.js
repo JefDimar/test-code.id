@@ -51,7 +51,7 @@ class Controller {
       const id = +req.params.idNumber
       const data = await redis.get('userDataByID:data')
 
-      if (data) {
+      if (data._id) {
         res.status(200).json(JSON.parse(data))
       } else {
         const { data } = await axios.get(`${service}idNumber/${id}`)
